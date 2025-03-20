@@ -1,0 +1,36 @@
+.meme {
+    position: relative; /* Set position to relative for positioning child elements */
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    overflow: hidden; /* Ensure content doesn't overflow */
+}
+
+.meme img {
+    max-width: 100%;
+    display: block; /* Ensure the image doesn't have extra space below */
+}
+
+.unsave-button {
+    position: absolute; /* Position the button relative to the .meme container */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Adjust for the button's size */
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    opacity: 0; /* Hide the button by default */
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+}
+
+.meme:hover .unsave-button {
+    opacity: 1; /* Show the button on hover */
+}
+
+.unsave-button:hover {
+    background-color: #e60000;
+}
