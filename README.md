@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="path/to/logo_memes_nocolor.png" alt="Meme Website Logo" width="200">
+  <img src="./Data/logo_memes_nocolor.png" alt="Meme Website Logo" width="200">
 </p>
 
 # Meme Website
