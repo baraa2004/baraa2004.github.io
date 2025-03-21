@@ -36,10 +36,33 @@ nav a {
     text-decoration: none;
     margin: 0 15px;
     font-size: 1.2em;
+    position: relative; /* For the hover effect */
+    transition: color 0.3s ease; /* Smooth color transition */
+}
+
+nav a::before {
+    content: '';
+    position: absolute;
+    bottom: -5px; /* Position the underline just below the text */
+    left: 0;
+    width: 0;
+    height: 3px;
+    background-color: var(--button-background-color); /* Background color for the hover effect */
+    transition: width 0.3s ease; /* Smooth animation for the underline */
+}
+
+nav a:hover {
+    color: var(--button-hover-background-color); /* Change text color on hover */
+}
+
+nav a:hover::before {
+    width: 100%; /* Expand the underline to full width on hover */
 }
 
 nav a.active {
     font-weight: bold;
+    color:black;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
 }
 
 .container {
