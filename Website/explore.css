@@ -167,4 +167,5 @@ svg rect {
     background-color: #4caf50; /* Green background for saved state */
     color: white;
     cursor: default; /* Disable pointer cursor */
+    pointer-events: none; /* Prevent further interaction */
 }
