@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Add event listener to the save button
                     const saveButton = memeElement.querySelector('.save-btn');
                     saveButton.addEventListener('click', () => {
-                        saveMeme(meme);
+                        saveMeme(meme, saveButton);
                     });
                 }
             });
@@ -76,11 +76,25 @@ document.addEventListener('DOMContentLoaded', () => {
     loadMemes();
 });
 
-const saveMeme = (meme) => {
+const saveMeme = (meme, button) => {
     let savedMemes = JSON.parse(localStorage.getItem('savedMemes')) || [];
+
+    // Check if the meme is already saved
+    const isAlreadySaved = savedMemes.some(savedMeme => savedMeme.url === meme.url);
+    if (isAlreadySaved) {
+        showAlert('Meme is already saved!', true); // Show an error alert
+        return;
+    }
+
+    // Save the meme
     savedMemes.push(meme);
     localStorage.setItem('savedMemes', JSON.stringify(savedMemes));
-    alert('Meme saved successfully!');
+
+    // Update button text and style
+    button.textContent = 'Saved';
+    button.classList.add('saved');
+
+    showAlert('Meme saved successfully!');
 };
 
 const animateButton = (e) => {
@@ -94,3 +108,30 @@ const animateButton = (e) => {
         button.innerHTML = '😂'; // Change button text to laughing emoji
     }, 700);
 };
+
+function showAlert(message, isError = false) {
+    let alertBox = document.createElement('div');
+    alertBox.className = `alert ${isError ? 'error' : ''}`;
+    alertBox.textContent = message;
+
+    document.body.appendChild(alertBox);
+
+    // Show the alert
+    setTimeout(() => {
+        alertBox.classList.add('show');
+    }, 10);
+
+    // Hide the alert after 3 seconds
+    setTimeout(() => {
+        alertBox.classList.remove('show');
+        setTimeout(() => alertBox.remove(), 300); // Remove the element after transition
+    }, 3000);
+}
+
+// Example usage for the save button
+document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('save-button')) {
+        // Logic to save the meme
+        showAlert('Meme saved successfully!');
+    }
+});

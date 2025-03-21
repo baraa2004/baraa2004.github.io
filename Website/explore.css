@@ -100,3 +100,48 @@ svg path,
 svg rect {
     fill: var(--button-background-color);
 }
+
+.alert {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #4caf50; /* Green background */
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.alert.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.alert.error {
+    background-color: #f44336; /* Red background for errors */
+}
+
+.save-btn {
+    background-color: var(--button-background-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.save-btn:active {
+    transform: scale(0.95); /* Shrinks the button slightly when pressed */
+}
+
+.save-btn.saved {
+    background-color: #4caf50; /* Green background for saved state */
+    color: white;
+    cursor: default; /* Disable pointer cursor */
+}
