@@ -38,7 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     memeElement.innerHTML = `
                         <img src="${meme.url}" alt="${meme.title}">
                         <div class="buttons">
-                            <button class="save-btn">Save</button>
+                            <button class="save-btn">
+                                <i class="fas fa-save"></i> Save
+                            </button>
                             <button class="hahaha-btn">Hahaha</button>
                         </div>
                     `;
