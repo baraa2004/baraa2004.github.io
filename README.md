@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="path/to/logo_memes_nocolor.png" alt="Meme Website Logo" width="200">
+</p>
+
 # Meme Website
 
 Welcome to the Meme Website! This platform allows users to explore, save, and enjoy memes. Whether you're looking for a laugh or want to save your favorite memes for later, this website has you covered.
