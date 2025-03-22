@@ -291,44 +291,77 @@ button {
 /* Navbar styling */
 .app-bar {
     display: flex;
-    justify-content: center; /* Center the navbar content */
-    align-items: center;
-    background-color: #ffcc00; /* Yellow background to match the website theme */
-    padding: 10px 20px;
-    color: #333; /* Dark text for better contrast */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: relative; /* Allows the logo to stay aligned */
+    align-items: center; /* Align items vertically */
+    justify-content: space-between; /* Space between logo and nav links */
+    background-color: var(--button-background-color); /* Use a variable for background color */
+    padding: 10px 20px; /* Adjust padding for consistent spacing */
+    position: sticky; /* Make the navbar sticky */
+    top: 0; /* Stick to the top of the page */
+    z-index: 1000; /* Ensure it stays above other elements */
+    width: 100%; /* Full width */
+    box-sizing: border-box; /* Include padding in width calculation */
 }
 
-.app-bar .logo-container {
-    position: absolute;
-    left: 20px; /* Keep the logo aligned to the left */
-}
-
-.app-bar .logo-container img {
-    height: 50px;
-}
-
-.app-bar nav {
+/* Logo container */
+.logo-container {
     display: flex;
-    gap: 20px;
+    align-items: center; /* Center-align the logo */
 }
 
-.app-bar nav a {
-    color: #ffffff; /* Dark text for better readability */
-    text-decoration: none;
-    font-size: 1em;
-    font-weight: bold;
-    transition: color 0.3s ease;
+.logo-container img {
+    max-width: 50px; /* Standardized logo size */
+    height: auto;
 }
 
-/* Navbar button hover effect */
-.app-bar nav a:hover {
-    color: #333; /* Change hover color to dark gray for better contrast */
-    text-decoration: underline; /* Add underline for better visibility */
+/* Navigation links */
+nav {
+    display: flex;
+    justify-content: center; /* Center-align navigation links */
+    flex-grow: 1; /* Allow links to grow and take available space */
+    gap: 20px; /* Space between navigation links */
 }
 
-.app-bar nav a.active {
-    color: #000000; /* Highlight the active link with blue */
-    text-decoration: underline;
+nav a {
+    display: flex;
+    align-items: center; /* Align icons and text vertically */
+    gap: 8px; /* Space between icon and text */
+    text-decoration: none; /* Remove underline */
+    color: var(--text-color); /* Use a variable for text color */
+    font-size: 1.2em; /* Adjust font size */
+    transition: color 0.3s ease; /* Smooth color transition */
+    padding: 10px 15px; /* Add padding for clickable area */
+    position: relative; /* For hover underline effect */
+}
+
+/* Navigation icons */
+nav a i {
+    font-size: 1.2em; /* Icon size */
+}
+
+/* Hover effect for navigation links */
+nav a:hover {
+    color: var(--button-hover-background-color); /* Change color on hover */
+}
+
+/* Hover underline effect */
+nav a::before {
+    content: '';
+    position: absolute;
+    bottom: -5px; /* Position the underline just below the text */
+    left: 0;
+    width: 0;
+    height: 3px;
+    background-color: var(--button-background-color); /* Background color for the hover effect */
+    transition: width 0.3s ease; /* Smooth animation for the underline */
+}
+
+nav a:hover::before {
+    width: 100%; /* Expand underline on hover */
+}
+
+/* Active link styling */
+nav a.active {
+    font-weight: bold; /* Highlight active link */
+    color: black; /* Active link color */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
 }
