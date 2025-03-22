@@ -4,6 +4,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const passwordForm = document.getElementById('password-form');
     const deleteAccountButton = document.getElementById('delete-account');
     const logoutButton = document.getElementById('logout-btn');
+    const usernameInput = document.getElementById('username');
+    const displayUsername = document.getElementById('display-username');
+    const saveButton = document.querySelector('.save-btn'); // Save button
+
+    // Load username from localStorage
+    const loadUsername = () => {
+        const savedUsername = localStorage.getItem('username') || 'bv4ts'; // Default to "bv4ts" if no username is saved
+        usernameInput.value = savedUsername; // Set the input field value
+        displayUsername.textContent = savedUsername; // Update the displayed username
+    };
+
+    // Save username to localStorage when Save button is clicked
+    saveButton.addEventListener('click', (e) => {
+        e.preventDefault(); // Prevent form submission
+        const newUsername = usernameInput.value.trim(); // Get the trimmed input value
+        if (newUsername) {
+            displayUsername.textContent = newUsername; // Update the displayed username
+            localStorage.setItem('username', newUsername); // Save the username to localStorage
+            alert('Username saved successfully!');
+        } else {
+            alert('Please enter a valid username.');
+        }
+    });
 
     // Load user memes from localStorage
     const loadUserMemes = () => {
@@ -73,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Load memes on page load
+    // Load username and memes on page load
+    loadUsername();
     loadUserMemes();
 });

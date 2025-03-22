@@ -1,19 +1,55 @@
+/* General styling */
+body {
+    background-color: #333; /* Dark background */
+    color: white;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
 /* Profile container styling */
 .profile-container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 20px auto;
     padding: 20px;
-    background-color: #ffffff; /* White background for better contrast */
+    background-color: #444; /* Dark gray background */
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     font-family: 'Arial', sans-serif;
     text-align: center; /* Center-align all content */
 }
 
+/* Profile sections */
+.profile-sections {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* Left section */
+.profile-left {
+    background-color: #ffcc00; /* Yellow background */
+    padding: 20px;
+    border-radius: 10px;
+    flex: 1;
+    text-align: center;
+}
+
 /* Profile header styling */
 .profile-header {
-    text-align: center;
+    display: flex;
+    align-items: center; /* Align items vertically */
+    gap: 20px; /* Add space between the profile picture and username */
+    justify-content: center; /* Center the content horizontally */
     margin-bottom: 20px;
+}
+
+.profile-header img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid white;
+    margin-bottom: 10px;
 }
 
 .profile-picture {
@@ -21,8 +57,14 @@
     height: 100px;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 10px;
-    border: 2px solid #007bff; /* Blue border for better visibility */
+    border: 2px solid white;
+}
+
+.profile-username h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: white; /* Adjust color to match the theme */
+    margin: 0;
 }
 
 .username {
@@ -49,13 +91,36 @@
     gap: 10px;
 }
 
+.profile-actions label {
+    font-weight: bold;
+    color: #333;
+}
+
+.profile-actions input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
 /* Profile actions button styling */
-.profile-actions button,
+.profile-actions button{
+    width: 200px; /* Make buttons consistent in size */
+    color: white;
+    border: 2px solid #000000; /* Add a border for better definition */
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    
+}
 .new-meme-section button {
     width: 200px; /* Make buttons consistent in size */
     background-color: #007bff; /* Blue background for better visibility */
     color: white;
-    border: 2px solid #0056b3; /* Add a border for better definition */
+    border: 2px solid #000000; /* Add a border for better definition */
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;
@@ -64,34 +129,54 @@
     transition: all 0.3s ease;
 }
 
-.profile-actions button:hover,
+.profile-actions button:hover{
+    border-color: #000000; /* Darker border on hover */
+    color: #ffffff; /* Keep text white */
+}
 .new-meme-section button:hover {
     background-color: #0056b3; /* Darker blue on hover */
     border-color: #003f7f; /* Darker border on hover */
     color: #ffffff; /* Keep text white */
 }
 
-/* Delete button styling */
-.delete-btn {
-    background-color: #dc3545; /* Red background for delete button */
-    color: white;
-    border: 2px solid #a71d2a; /* Add a border for better definition */
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
+/* General button styling (optional, for fallback) */
+button {
     font-size: 1em;
     font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
     transition: all 0.3s ease;
 }
 
+/* Save Button Styling */
+.save-btn {
+    width: 200px;
+    background-color: #28a745 !important; /* Green button */
+    color: white;
+    border: none;
+    padding: 10px;
+}
+
+.save-btn:hover {
+    background-color: #218838 !important; /* Darker green on hover */
+}
+
+/* Delete Button Styling */
+.delete-btn {
+    width: 200px;
+    background-color: #dc3545 !important; /* Red button */
+    color: white;
+    border: none;
+    padding: 10px;
+}
+
 .delete-btn:hover {
-    background-color: #a71d2a; /* Darker red on hover */
-    border-color: #7f131d; /* Darker border on hover */
-    color: #ffffff; /* Keep text white */
+    background-color: #a71d2a !important; /* Darker red on hover */
 }
 
 /* Logout button styling */
 .logout-btn {
+    width: 200px;
     background-color: #ffc107; /* Yellow background for logout button */
     color: #333; /* Dark text for better contrast */
     border: 2px solid #e0a800; /* Add a border for better definition */
@@ -110,6 +195,15 @@
     color: #ffffff; /* White text on hover */
 }
 
+/* Right section */
+.profile-right {
+    background-color: #ffcc00; /* Yellow background */
+    padding: 20px;
+    border-radius: 10px;
+    flex: 1;
+    text-align: center;
+}
+
 /* New meme section styling */
 .new-meme-section {
     margin-bottom: 20px;
@@ -117,18 +211,42 @@
 }
 
 .new-meme-section h3 {
-    color: #007bff; /* Blue heading for better visibility */
+    font-weight: bold;
+    color: #333;
+}
+
+.new-meme-section input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* Add Meme Button Styling */
+.add-meme-btn {
+    width: 200px;
+    background-color: #28a745; /* Green button */
+    color: white;
+    border: none;
+    padding: 10px;
+}
+
+.add-meme-btn:hover {
+    background-color: #218838; /* Darker green on hover */
 }
 
 /* Meme list styling */
 .meme-list {
     margin-top: 20px;
+    background-color: #ffcc00; /* Yellow background */
+    padding: 20px;
+    border-radius: 10px;
     text-align: center; /* Center-align the section */
 }
 
 .meme-list h3 {
-    margin-bottom: 10px;
-    color: #007bff; /* Changed to blue for better visibility */
+    font-weight: bold;
+    color: #333;
 }
 
 #meme-container {
@@ -141,9 +259,8 @@
 .meme-item {
     width: 150px;
     text-align: center;
-    background-color: #f9f9f9; /* Changed to light gray for better contrast */
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    background-color: white;
+    border-radius: 10px;
     padding: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -157,12 +274,13 @@
 
 /* Meme item button styling */
 .meme-item button {
-    background-color: #dc3545; /* Red background for delete button */
+    background-color: #dc3545; /* Red button */
     color: white;
     border: none;
     padding: 5px;
     border-radius: 5px;
     cursor: pointer;
+    font-weight: bold;
     transition: background-color 0.3s ease;
 }
 
