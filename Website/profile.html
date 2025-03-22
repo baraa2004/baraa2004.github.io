@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="profile.css"> <!-- Link to the new profile-specific CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Lacquer&display=swap" rel="stylesheet">
+    <link rel="icon" href="../Data/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <div class="app-bar">
+        <div class="logo-container">
+            <img src="../Data/logo_memes_nocolor.png" alt="Logo" class="logo">
+        </div>
+        <nav>
+            <a href="explore.html">
+                <i class="fas fa-search"></i> Explore
+            </a>
+            <a href="saves.html">
+                <i class="fas fa-bookmark"></i> Saves
+            </a>
+            <a href="profile.html" class="active">
+                <i class="fas fa-user"></i> Profile
+            </a>
+        </nav>
+    </div>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="../Data/default-profile.png" alt="Profile Picture" class="profile-picture">
+            <h2 class="username">Username</h2>
+        </div>
+
+        <div class="profile-actions">
+            <h3>Account Settings</h3>
+            <form id="password-form">
+                <label for="password">Change Password:</label>
+                <input type="password" id="password" placeholder="Enter new password">
+                <button type="submit" class="save-btn">Save</button>
+            </form>
+            <button id="delete-account" class="delete-btn">Delete Account</button>
+            <button id="logout-btn" class="logout-btn">Logout</button> <!-- Added Logout Button -->
+        </div>
+
+        <div class="new-meme-section">
+            <h3>New Meme Post</h3>
+            <form id="new-meme-form">
+                <label for="meme-title">Title:</label>
+                <input type="text" id="meme-title" placeholder="Enter meme title">
+                <label for="meme-url">Meme URL:</label>
+                <input type="url" id="meme-url" placeholder="Enter meme URL">
+                <button type="submit" class="save-btn">Add Meme</button>
+            </form>
+        </div>
+
+        <div class="meme-list">
+            <h3>Your Memes</h3>
+            <div id="meme-container">
+                <!-- User memes will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="profile.js"></script>
+</body>
+</html>
+
