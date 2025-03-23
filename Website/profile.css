@@ -365,3 +365,95 @@ nav a.active {
     color: black; /* Active link color */
     transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
 }
+
+/* Alert styles */
+.alert {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #4caf50;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.alert.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.alert.error {
+    background-color: #f44336;
+}
+
+/* Meme item styles */
+.meme-item {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.meme-item .meme-header {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.meme-item .meme-header h3 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.meme-item .meme-image {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.meme-item .meme-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.meme-item .meme-footer {
+    padding: 15px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+.delete-btn i {
+    font-size: 1.1em;
+}
+
+.no-memes {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    margin: 20px 0;
+}
