@@ -10,25 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load username from localStorage
     const loadUsername = () => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            window.location.href = 'loginpage.html';
-            return;
-        }
-        fetch('http://localhost:5000/api/profile', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            usernameInput.value = data.username;
-            displayUsername.textContent = data.username;
-        })
-        .catch(error => {
-            console.error('Error loading profile:', error);
-            showAlert('Failed to load profile', true);
-        });
+        const savedUsername = localStorage.getItem('username') || 'bv4ts'; // Default to "bv4ts" if no username is saved
+        usernameInput.value = savedUsername; // Set the input field value
+        displayUsername.textContent = savedUsername; // Update the displayed username
     };
 
     // Save username to localStorage when Save button is clicked
@@ -44,135 +28,43 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Load user memes from backend
-    const loadUserMemes = async () => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            window.location.href = 'loginpage.html';
-            return;
-        }
-
-        try {
-            const response = await fetch('http://localhost:5000/api/saves', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to load saved memes');
-            }
-
-            const data = await response.json();
-            const userMemes = data.saves || [];
-            
-            memeContainer.innerHTML = '';
-            if (userMemes.length === 0) {
-                memeContainer.innerHTML = '<p class="no-memes">No memes posted yet!</p>';
-                return;
-            }
-
-            userMemes.forEach((meme, index) => {
-                const memeItem = document.createElement('div');
-                memeItem.classList.add('meme-item');
-                memeItem.innerHTML = `
-                    <div class="meme-header">
-                        <h3>${meme.title || 'Untitled Meme'}</h3>
-                    </div>
-                    <div class="meme-image">
-                        <img src="${meme.url}" alt="${meme.title || 'Posted meme'}" 
-                             onerror="this.onerror=null; this.src='../Data/error-image.png';">
-                    </div>
-                    <div class="meme-footer">
-                        <button onclick="deleteMeme(${index})" class="delete-btn">
-                            <i class="fas fa-trash"></i> Delete
-                        </button>
-                    </div>
-                `;
-                memeContainer.appendChild(memeItem);
-            });
-        } catch (error) {
-            console.error('Error loading memes:', error);
-            showAlert('Failed to load memes', true);
-        }
+    // Load user memes from localStorage
+    const loadUserMemes = () => {
+        const userMemes = JSON.parse(localStorage.getItem('userMemes')) || [];
+        memeContainer.innerHTML = '';
+        userMemes.forEach((meme, index) => {
+            const memeItem = document.createElement('div');
+            memeItem.classList.add('meme-item');
+            memeItem.innerHTML = `
+                <img src="${meme.url}" alt="${meme.title}">
+                <p>${meme.title}</p>
+                <button onclick="deleteMeme(${index})">Delete</button>
+            `;
+            memeContainer.appendChild(memeItem);
+        });
     };
 
     // Add new meme
-    newMemeForm.addEventListener('submit', async (e) => {
+    newMemeForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const title = document.getElementById('meme-title').value;
         const url = document.getElementById('meme-url').value;
 
         if (title && url) {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                window.location.href = 'loginpage.html';
-                return;
-            }
-
-            try {
-                const response = await fetch('http://localhost:5000/api/saves', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({
-                        item: {
-                            url: url,
-                            title: title,
-                            author: localStorage.getItem('username'),
-                            created_utc: Math.floor(Date.now() / 1000),
-                            likes: 0,
-                            liked: false
-                        }
-                    })
-                });
-
-                if (response.ok) {
-                    showAlert('Meme posted successfully!');
-                    newMemeForm.reset();
-                    loadUserMemes();
-                } else {
-                    const data = await response.json();
-                    throw new Error(data.error || 'Failed to post meme');
-                }
-            } catch (error) {
-                console.error('Error posting meme:', error);
-                showAlert(error.message || 'Failed to post meme', true);
-            }
-        } else {
-            showAlert('Please fill in both title and URL', true);
+            const userMemes = JSON.parse(localStorage.getItem('userMemes')) || [];
+            userMemes.push({ title, url });
+            localStorage.setItem('userMemes', JSON.stringify(userMemes));
+            loadUserMemes();
+            newMemeForm.reset();
         }
     });
 
     // Delete meme
-    window.deleteMeme = async (index) => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            window.location.href = 'loginpage.html';
-            return;
-        }
-
-        try {
-            const response = await fetch(`http://localhost:5000/api/saves/${index}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
-            if (response.ok) {
-                showAlert('Meme deleted successfully!');
-                loadUserMemes();
-            } else {
-                const data = await response.json();
-                throw new Error(data.error || 'Failed to delete meme');
-            }
-        } catch (error) {
-            console.error('Error deleting meme:', error);
-            showAlert(error.message || 'Failed to delete meme', true);
-        }
+    window.deleteMeme = (index) => {
+        const userMemes = JSON.parse(localStorage.getItem('userMemes')) || [];
+        userMemes.splice(index, 1);
+        localStorage.setItem('userMemes', JSON.stringify(userMemes));
+        loadUserMemes();
     };
 
     // Change password
@@ -203,23 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = 'loginpage.html'; // Redirect to the login page
         }
     });
-
-    function showAlert(message, isError = false) {
-        let alertBox = document.createElement('div');
-        alertBox.className = `alert ${isError ? 'error' : ''}`;
-        alertBox.textContent = message;
-    
-        document.body.appendChild(alertBox);
-    
-        setTimeout(() => {
-            alertBox.classList.add('show');
-        }, 10);
-    
-        setTimeout(() => {
-            alertBox.classList.remove('show');
-            setTimeout(() => alertBox.remove(), 300);
-        }, 3000);
-    }
 
     // Load username and memes on page load
     loadUsername();

@@ -1,7 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Check authentication first
-    checkAuth();
-
     const memeContainer = document.getElementById('memeContainer');
     const loader = document.getElementById('loader');
     let isLoading = false;
@@ -17,29 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadMemes = async () => {
         if (isLoading) return;
         isLoading = true;
-        loader.style.display = 'block';
+        loader.style.display = 'block'; // Show the loader
 
         try {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                window.location.href = 'loginpage.html';
-                return;
-            }
-
-            // Get saved memes from backend
-            const savedResponse = await fetch('http://localhost:5000/api/saves', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-
-            let savedMemes = [];
-            if (savedResponse.ok) {
-                const savedData = await savedResponse.json();
-                savedMemes = savedData.saves || [];
-            }
-
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Add a 1-second delay
 
             let url = `https://www.reddit.com/r/memes.json?limit=10&random=${Math.random()}`;
             if (after) {
@@ -48,58 +26,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const response = await fetch(url);
             const data = await response.json();
-            let memes = data.data.children.map(child => {
-                const memeData = child.data;
-                return {
-                    url: memeData.url,
-                    title: memeData.title,
-                    author: memeData.author,
-                    permalink: memeData.permalink,
-                    created_utc: memeData.created_utc,
-                    subreddit: memeData.subreddit,
-                    post_hint: memeData.post_hint,
-                    likes: 0,
-                    liked: false
-                };
-            }).filter(meme => 
-                meme.url && 
-                (meme.url.endsWith('.jpg') || 
-                 meme.url.endsWith('.png') || 
-                 meme.url.endsWith('.gif') ||
-                 meme.post_hint === 'image')
-            );
+            let memes = data.data.children.map(child => child.data);
+            after = data.data.after; // Update the after parameter
 
-            after = data.data.after;
-            shuffleArray(memes);
+            shuffleArray(memes); // Shuffle the memes array
 
-            // Load saved likes and liked states
+            // Load saved likes and liked states when loading memes
             const savedLikes = loadSavedLikes();
             memes.forEach(meme => {
                 const savedLikeData = savedLikes[meme.url] || { count: 0, liked: false };
-                meme.likes = savedLikeData.count;
-                meme.liked = savedLikeData.liked;
+                meme.likes = savedLikeData.count; // Attach saved like count to the meme object
+                meme.liked = savedLikeData.liked; // Attach saved liked state to the meme object
             });
+
+            // Load saved memes from localStorage
+            const savedMemes = JSON.parse(localStorage.getItem('savedMemes')) || [];
 
             memes.forEach(meme => {
                 if (!memeContainer.querySelector(`img[src="${meme.url}"]`)) {
                     const memeElement = document.createElement('div');
                     memeElement.classList.add('meme');
                     memeElement.innerHTML = `
-                        <div class="meme-header">
-                            <h3>${meme.title || 'Untitled Meme'}</h3>
-                            ${meme.author ? `<p>Posted by: ${meme.author}</p>` : ''}
-                        </div>
-                        <div class="meme-image">
-                            <img src="${meme.url}" alt="${meme.title}">
-                        </div>
-                        <div class="meme-footer">
-                            <div class="buttons">
-                                <button class="save-btn"></button>
-                                <button class="like-btn"></button>
-                            </div>
+                        <img src="${meme.url}" alt="${meme.title}">
+                        <div class="buttons">
+                            <button class="save-btn"></button>
+                            <button class="like-btn"></button>
                         </div>
                     `;
-
                     const img = memeElement.querySelector('img');
                     img.onload = () => {
                         memeContainer.appendChild(memeElement);
@@ -111,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Add event listener to the save button
                     const saveButton = memeElement.querySelector('.save-btn');
 
-                    // Initialize the save button with the saved state from backend
+                    // Initialize the save button with the saved state
                     const isAlreadySaved = savedMemes.some(savedMeme => savedMeme.url === meme.url);
                     if (isAlreadySaved) {
                         saveButton.innerHTML = '<i class="fas fa-check"></i> Saved';
@@ -128,16 +81,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     const likeButton = memeElement.querySelector('.like-btn');
                     const likeCountElement = document.createElement('span');
                     likeCountElement.classList.add('like-count');
-                    likeCountElement.textContent = meme.likes || 0;
+                    likeCountElement.textContent = meme.likes || 0; // Initialize with saved likes or 0
                     likeButton.appendChild(likeCountElement);
 
+                    // Initialize the like button with the saved liked state
                     if (meme.liked) {
                         likeButton.classList.add('liked');
                         likeButton.innerHTML = 'Liked ❤️ ';
-                        likeButton.appendChild(likeCountElement);
+                        likeButton.appendChild(likeCountElement); // Ensure the counter is appended
                     } else {
                         likeButton.innerHTML = 'Like ';
-                        likeButton.appendChild(likeCountElement);
+                        likeButton.appendChild(likeCountElement); // Ensure the counter is appended
                     }
 
                     likeButton.addEventListener('click', (e) => {
@@ -147,12 +101,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } catch (error) {
             console.error('Error fetching memes:', error);
-            if (error.message.includes('authentication')) {
-                window.location.href = 'loginpage.html';
-            }
         } finally {
             isLoading = false;
-            loader.style.display = 'none';
+            loader.style.display = 'none'; // Hide the loader
         }
     };
 
@@ -167,85 +118,53 @@ document.addEventListener('DOMContentLoaded', () => {
     loadMemes();
 });
 
-const toggleSaveMeme = async (meme, button) => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-        window.location.href = 'loginpage.html';
+const saveMeme = (meme, button) => {
+    let savedMemes = JSON.parse(localStorage.getItem('savedMemes')) || [];
+
+    // Check if the meme is already saved
+    const isAlreadySaved = savedMemes.some(savedMeme => savedMeme.url === meme.url);
+    if (isAlreadySaved) {
+        showAlert('Meme is already saved!', true); // Show an error alert
         return;
     }
 
-    try {
-        // Check if the meme is already saved by checking the button state
-        const isAlreadySaved = button.classList.contains('saved');
+    // Save the meme
+    savedMemes.push(meme);
+    localStorage.setItem('savedMemes', JSON.stringify(savedMemes));
 
-        if (isAlreadySaved) {
-            // Get the index of the meme from the backend's saved memes
-            const response = await fetch('http://localhost:5000/api/saves', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            
-            if (!response.ok) {
-                throw new Error('Failed to fetch saved memes');
-            }
+    // Update button text and style
+    button.textContent = 'Saved';
+    button.classList.add('saved');
 
-            const data = await response.json();
-            const savedMemes = data.saves || [];
-            const memeIndex = savedMemes.findIndex(savedMeme => savedMeme.url === meme.url);
+    showAlert('Meme saved successfully!');
+};
 
-            if (memeIndex !== -1) {
-                // Remove the meme using the backend API
-                const deleteResponse = await fetch(`http://localhost:5000/api/saves/${memeIndex}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
+const toggleSaveMeme = (meme, button) => {
+    let savedMemes = JSON.parse(localStorage.getItem('savedMemes')) || [];
 
-                if (deleteResponse.ok) {
-                    button.innerHTML = '<i class="fas fa-save"></i> Save';
-                    button.classList.remove('saved');
-                    showAlert('Meme unsaved successfully!');
-                } else {
-                    const errorData = await deleteResponse.json();
-                    throw new Error(errorData.error || 'Failed to unsave meme');
-                }
-            }
-        } else {
-            // Save the meme using the backend API
-            const saveResponse = await fetch('http://localhost:5000/api/saves', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    item: {
-                        url: meme.url,
-                        title: meme.title,
-                        author: meme.author,
-                        permalink: meme.permalink,
-                        created_utc: meme.created_utc,
-                        subreddit: meme.subreddit,
-                        likes: meme.likes || 0,
-                        liked: meme.liked || false
-                    }
-                })
-            });
+    // Check if the meme is already saved
+    const isAlreadySaved = savedMemes.some(savedMeme => savedMeme.url === meme.url);
 
-            if (saveResponse.ok) {
-                button.innerHTML = '<i class="fas fa-check"></i> Saved';
-                button.classList.add('saved');
-                showAlert('Meme saved successfully!');
-            } else {
-                const errorData = await saveResponse.json();
-                throw new Error(errorData.error || 'Failed to save meme');
-            }
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        showAlert(error.message || 'Failed to save/unsave meme', true);
+    if (isAlreadySaved) {
+        // Unsave the meme
+        savedMemes = savedMemes.filter(savedMeme => savedMeme.url !== meme.url);
+        localStorage.setItem('savedMemes', JSON.stringify(savedMemes));
+
+        // Update button text, icon, and style
+        button.innerHTML = '<i class="fas fa-save"></i> Save';
+        button.classList.remove('saved');
+
+        showAlert('Meme unsaved successfully!');
+    } else {
+        // Save the meme
+        savedMemes.push(meme);
+        localStorage.setItem('savedMemes', JSON.stringify(savedMemes));
+
+        // Update button text, icon, and style
+        button.innerHTML = '<i class="fas fa-check"></i> Saved';
+        button.classList.add('saved');
+
+        showAlert('Meme saved successfully!');
     }
 };
 
@@ -268,15 +187,15 @@ function showAlert(message, isError = false) {
 
     document.body.appendChild(alertBox);
 
-    // Trigger reflow
+    // Show the alert
     setTimeout(() => {
         alertBox.classList.add('show');
     }, 10);
 
-    // Remove the alert after 3 seconds
+    // Hide the alert after 3 seconds
     setTimeout(() => {
         alertBox.classList.remove('show');
-        setTimeout(() => alertBox.remove(), 300);
+        setTimeout(() => alertBox.remove(), 300); // Remove the element after transition
     }, 3000);
 }
 

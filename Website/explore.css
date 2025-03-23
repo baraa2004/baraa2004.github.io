@@ -132,7 +132,7 @@ svg rect {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: #4caf50;
+    background-color: #4caf50; /* Green background */
     color: white;
     padding: 15px 20px;
     border-radius: 5px;
@@ -150,7 +150,7 @@ svg rect {
 }
 
 .alert.error {
-    background-color: #f44336;
+    background-color: #f44336; /* Red background for errors */
 }
 
 /* Save button with icon */
