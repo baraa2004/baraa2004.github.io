@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Load saved memes from localStorage
             const savedMemes = JSON.parse(localStorage.getItem('savedMemes')) || [];
 
+            
             memes.forEach(meme => {
                 if (!memeContainer.querySelector(`img[src="${meme.url}"]`)) {
                     const memeElement = document.createElement('div');
