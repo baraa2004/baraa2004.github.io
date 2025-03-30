@@ -1,28 +1,31 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const savedMemesContainer = document.getElementById('savedMemesContainer');
-    const savedMemes = JSON.parse(localStorage.getItem('savedMemes')) || [];
+    const res = await fetch('get_saved_memes.php');
+    const savedMemes = await res.json();
 
-    if (savedMemes.length === 0) {
+    if (!Array.isArray(savedMemes) || savedMemes.length === 0) {
         savedMemesContainer.innerHTML = '<p>No saved memes found.</p>';
         return;
     }
 
-    savedMemes.forEach((meme, index) => {
+    savedMemes.forEach(url => {
         const memeElement = document.createElement('div');
         memeElement.classList.add('meme');
         memeElement.innerHTML = `
-            <img src="${meme.url}" alt="Saved Meme">
-            <button class="unsave-button" data-index="${index}">Unsave</button>
+            <img src="${url}" alt="Saved Meme">
+            <button class="unsave-button" data-url="${url}">Unsave</button>
         `;
         savedMemesContainer.appendChild(memeElement);
     });
 
-    savedMemesContainer.addEventListener('click', (event) => {
+    savedMemesContainer.addEventListener('click', async (event) => {
         if (event.target.classList.contains('unsave-button')) {
-            const memeIndex = event.target.getAttribute('data-index');
-            savedMemes.splice(memeIndex, 1);
-            localStorage.setItem('savedMemes', JSON.stringify(savedMemes));
-            location.reload(); // Reload the page to reflect changes
+            const meme_url = event.target.getAttribute('data-url');
+            await fetch('unsave_meme.php', {
+                method: 'POST',
+                body: new URLSearchParams({ meme_url })
+            });
+            location.reload();
         }
     });
 });

@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: loginpage.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,16 +23,16 @@
             <img src="../Data/logo_memes_nocolor.png" alt="Logo" class="logo">
         </div>
         <nav>
-            <a href="explore.html" >
+            <a href="explore.php" >
                 <i class="fas fa-search"></i> Explore
             </a>
-            <a href="saves.html"class="active">
+            <a href="saves.php"class="active">
                 <i class="fas fa-bookmark"></i> Saves
             </a>
-            <a href="profile.html">
+            <a href="profile.php">
                 <i class="fas fa-user"></i> Profile
             </a>
-            <a href="logout.html" class="logout">
+            <a href="logout.php" class="logout">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </a>
         </nav>
