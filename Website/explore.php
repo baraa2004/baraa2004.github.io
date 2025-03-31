@@ -14,14 +14,15 @@ if (!isset($_SESSION['user_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Explore Memes</title>
     <link rel="stylesheet" href="explore.css">
+    <link rel="stylesheet" href="likes_comments.css">
+    <link rel="stylesheet" href="enhanced_comments.css">
+
     <link href="https://fonts.googleapis.com/css2?family=Lacquer&display=swap" rel="stylesheet">
     <link rel="icon" href="../Data/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-<script>
-    console.log("INLINE JS WORKS");
-</script>
+
 
     <div class="app-bar">
         <div class="logo-container">
@@ -68,6 +69,6 @@ if (!isset($_SESSION['user_id'])) {
         </svg>
     </div>
 
-    <script src="explore.js"></script>
+    <script src="explores.js"></script>
 </body>
 </html>

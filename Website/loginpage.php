@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form id="loginForm" method="post">
                 <input type="text" name="username" placeholder="Username" required>
                 <input type="password" name="password" placeholder="Password" required>
-                <a href="registerpage.php">Don't have an account?</a>
+                <a href="register.php">Don't have an account?</a>
                 <button type="submit" class="btn">
                     <span class="dot"></span>
                     <span class="dot"></span>
