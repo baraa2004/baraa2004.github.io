@@ -1,4 +1,7 @@
 /* General styling */
+@import url('styles.css');
+
+/* General styling */
 body {
     background-color: #333; /* Dark background */
     color: white;
@@ -115,9 +118,21 @@ nav a.active {
     color: var(--text-color);
 }
 
+/* Profile form button styles */
 .profile-form button {
     margin-top: 10px;
     width: 100%;
+    padding: 10px;
+    background-color: var(--button-background-color); /* Use variable for background */
+    color: var(--text-color); /* Use variable for text color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.profile-form button:hover {
+    background-color: var(--button-hover-background-color); /* Use variable for hover background */
 }
 
 /* Upload form styles */
@@ -148,9 +163,21 @@ nav a.active {
     color: var(--text-color);
 }
 
+/* Upload form button styles */
 .upload-form button {
     margin-top: 10px;
     width: 100%;
+    padding: 10px;
+    background-color: var(--button-background-color); /* Use variable for background */
+    color: var(--text-color); /* Use variable for text color */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.upload-form button:hover {
+    background-color: var(--button-hover-background-color); /* Use variable for hover background */
 }
 
 /* Success message */
@@ -161,4 +188,17 @@ nav a.active {
     text-align: center;
     border-radius: 6px;
     margin-bottom: 10px;
+}
+
+/* Responsive layout for mobile screens */
+@media (max-width: 768px) {
+    .profile-content {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center align items */
+    }
+
+    .profile-info, .upload-form {
+        width: 100%; /* Take full width */
+        max-width: 400px; /* Optional: Limit max width */
+    }
 }

@@ -1,3 +1,5 @@
+@import url('styles.css');
+
 body {
     overflow-y: auto; /* Ensure the body allows vertical scrolling */
 }
@@ -72,7 +74,6 @@ nav a.active {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
     width: 100%;
 }
 
@@ -82,8 +83,7 @@ nav a.active {
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    padding: 20px;
-    width: 100%;
+    width: 80%;
 }
 
 /* Meme styles */
@@ -313,3 +313,4 @@ svg rect {
 }
 
 /* --- profile_feed.css --- */
+

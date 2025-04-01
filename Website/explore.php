@@ -22,31 +22,22 @@ if (!isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-
-
-    <div class="app-bar">
-        <div class="logo-container">
-            <img src="../Data/logo_memes_nocolor.png" alt="Logo" class="logo">
-        </div>
-        <nav>
-            <a href="feed.php">
-                <i class="fas fa-rss"></i> Feed
-            </a>
-            <a href="explore.php" class="active">
-                <i class="fas fa-search"></i> Explore
-            </a>
-            <a href="saves.php">
-                <i class="fas fa-bookmark"></i> Saves
-            </a>
-            
-            <a href="profile.php">
-                <i class="fas fa-user"></i> Profile
-            </a>
-            <a href="logout.php" class="logout">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
-        </nav>
+<div class="app-bar">
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button> <!-- Hamburger menu -->
+    <div class="logo-container">
+        <img class="logo" src="../Data/logo_memes_nocolor.png" alt="Logo">
     </div>
+</div>
+
+<nav id="sidebar-nav" class="sidebar">
+    <a href="explore.php" class="active"><i class="fas fa-search"></i> Explore</a>
+    <a href="feed.php"><i class="fas fa-rss"></i> Feed</a>
+    <a href="saves.php"><i class="fas fa-bookmark"></i> Saved</a>
+    <a href="profile.php"><i class="fas fa-user"></i> Profile</a>
+    <a href="logout.php" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</nav>
+
+<div id="overlay" onclick="toggleSidebar()"></div>
 
     <div class="container" id="memeContainer">
         <!-- Memes will be loaded here -->
@@ -74,6 +65,14 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 
     <script src="explores.js"></script>
+    <script>
+function toggleSidebar() {
+  const nav = document.getElementById('sidebar-nav');
+  const overlay = document.getElementById('overlay');
+  nav.classList.toggle('open');
+  overlay.classList.toggle('show');
+}
+</script>
 
 </body>
 </html>

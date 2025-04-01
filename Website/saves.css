@@ -1,4 +1,5 @@
 /* Meme container styles */
+@import url('styles.css');
 
 .meme-container {
     display: flex;
