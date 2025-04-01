@@ -3,12 +3,22 @@ include 'db.php';
 session_start();
 header('Content-Type: application/json');
 
-$meme_url = $_GET['meme_url'] ?? '';
+// Validate input
+if (!isset($_GET['meme_url']) || empty($_GET['meme_url'])) {
+    echo json_encode(["likes" => 0, "error" => "Missing meme_url"]);
+    exit;
+}
 
+$meme_url = $_GET['meme_url'];
+
+// Query the number of likes for the meme
 $stmt = $conn->prepare("SELECT COUNT(*) FROM likes WHERE meme_url = ?");
 $stmt->bind_param("s", $meme_url);
 $stmt->execute();
-$stmt->bind_result($count);
+$stmt->bind_result($likeCount);
 $stmt->fetch();
-echo json_encode(["likes" => $count]);
+$stmt->close();
+
+// Output JSON result
+echo json_encode(["likes" => $likeCount]);
 ?>

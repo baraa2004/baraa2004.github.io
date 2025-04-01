@@ -8,14 +8,27 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+if (!isset($_POST['meme_url']) || empty($_POST['meme_url'])) {
+    echo json_encode(["success" => false, "error" => "Missing meme URL"]);
+    exit;
+}
+
 $user_id = $_SESSION['user_id'];
 $meme_url = $_POST['meme_url'];
 
-$stmt = $conn->prepare("INSERT INTO likes (user_id, meme_url) VALUES (?, ?)
-    ON DUPLICATE KEY UPDATE meme_url = meme_url");
+// Insert like if not already liked
+$stmt = $conn->prepare("INSERT IGNORE INTO likes (user_id, meme_url) VALUES (?, ?)");
 $stmt->bind_param("is", $user_id, $meme_url);
+$stmt->execute();
+$stmt->close();
 
-echo $stmt->execute() ?
-    json_encode(["success" => true]) :
-    json_encode(["success" => false, "error" => $stmt->error]);
+// Get updated like count
+$stmt = $conn->prepare("SELECT COUNT(*) FROM likes WHERE meme_url = ?");
+$stmt->bind_param("s", $meme_url);
+$stmt->execute();
+$stmt->bind_result($count);
+$stmt->fetch();
+$stmt->close();
+
+echo json_encode(["success" => true, "likes" => $count]);
 ?>

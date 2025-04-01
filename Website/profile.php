@@ -4,18 +4,123 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: loginpage.php');
     exit;
 }
+include 'db.php';
+
+$user_id = $_SESSION['user_id'];
+$stmt = $conn->prepare("SELECT username, profile_picture FROM users WHERE id = ?");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$stmt->bind_result($username, $profile_picture);
+$stmt->fetch();
+$stmt->close();
+$updated = isset($_GET['updated']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title>Your Profile</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="profile_feed.css">
     <link href="https://fonts.googleapis.com/css2?family=Lacquer&display=swap" rel="stylesheet">
     <link rel="icon" href="../Data/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Profile container styles */
+        .profile-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .page-title {
+            font-size: 2em;
+            color: var(--text-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .profile-content {
+            display: flex;
+            justify-content: center; /* Center both containers horizontally */
+            align-items: flex-start; /* Align containers to the top */
+            gap: 40px; /* Add spacing between the containers */
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .profile-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            background-color: var(--background-color);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-picture {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--button-background-color);
+        }
+
+        .profile-form input {
+            width: 100%;
+            max-width: 300px;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid var(--button-background-color);
+            border-radius: 5px;
+            background-color: var(--input-background-color);
+            color: var(--text-color);
+        }
+
+        .profile-form button {
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        /* Upload form styles */
+        .upload-form {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: var(--background-color);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .upload-form h2 {
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .upload-form input {
+            width: 100%;
+            max-width: 300px;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid var(--button-background-color);
+            border-radius: 5px;
+            background-color: var(--input-background-color);
+            color: var(--text-color);
+        }
+
+        .upload-form button {
+            margin-top: 10px;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
     <div class="app-bar">
@@ -23,6 +128,9 @@ if (!isset($_SESSION['user_id'])) {
             <img src="../Data/logo_memes_nocolor.png" alt="Logo" class="logo">
         </div>
         <nav>
+            <a href="feed.php">
+                <i class="fas fa-rss"></i> Feed
+            </a>
             <a href="explore.php">
                 <i class="fas fa-search"></i> Explore
             </a>
@@ -36,56 +144,35 @@ if (!isset($_SESSION['user_id'])) {
                 <i class="fas fa-sign-out-alt"></i> Logout
             </a>
         </nav>
-        </nav>
     </div>
 
-    <div class="profile-container">
-        <div class="profile-sections">
-            <!-- Left Section -->
-            <div class="profile-left">
-                <div class="profile-header">
-                    <img src="../Data/default_profile.png" alt="Profile Picture" class="profile-picture">
-                    <div class="profile-username">
-                        <h2 id="display-username">bv4ts</h2> <!-- Replace "bv4ts" with dynamic content if needed -->
-                    </div>
-                </div>
-                <div class="profile-actions">
-                    <form id="profile-form">
-                        <label for="username">Username:</label>
-                        <input type="text" id="username" placeholder="Enter username">
-                        <label for="password">Password:</label>
-                        <input type="password" id="password" placeholder="Enter new password">
-                        <button type="submit" class="save-btn">Save</button>
-                        <button id="delete-account" class="delete-btn">Delete Account</button>
-                    </form>
-                </div>
+    <div class="container profile-container">
+        <h1 class="page-title">Welcome, <?php echo htmlspecialchars($username); ?></h1>
+
+        <?php if ($updated): ?>
+        <div class="success-message">✅ Profile updated successfully!</div>
+        <?php endif; ?>
+
+        <div class="profile-content">
+            <div class="profile-info">
+                <img src="<?php echo $profile_picture ? $profile_picture : 'default-avatar.png'; ?>" alt="Profile Picture" class="profile-picture">
+                <form action="update_profile.php" method="POST" class="profile-form">
+                    <input type="text" name="new_username" placeholder="New Username">
+                    <input type="password" name="new_password" placeholder="New Password">
+                    <input type="text" name="profile_picture" placeholder="Profile Picture URL">
+                    <button type="submit" class="btn">Update Profile</button>
+                </form>
             </div>
 
-            <!-- Right Section -->
-            <div class="profile-right">
-                <div class="new-meme-section">
-                    <h3>Add New Meme</h3>
-                    <form id="new-meme-form">
-                        <label for="meme-title">Title:</label>
-                        <input type="text" id="meme-title" placeholder="Enter meme title">
-                        <label for="meme-url">Add Meme:</label>
-                        <input type="url" id="meme-url" placeholder="Enter meme URL">
-                        <button type="submit" class="add-meme-btn">Add Meme</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Your Memes Section -->
-        <div class="meme-list">
-            <h3>Your Memes</h3>
-            <div id="meme-container">
-                <!-- User memes will be dynamically added here -->
+            <div class="upload-form">
+                <h2>Upload a Meme</h2>
+                <form action="upload_meme.php" method="POST">
+                    <input type="text" name="title" placeholder="Meme Title" required>
+                    <input type="text" name="meme_url" placeholder="Meme Image URL" required>
+                    <button type="submit" class="btn">Upload Meme</button>
+                </form>
             </div>
         </div>
     </div>
-
-    <script src="profile.js"></script>
 </body>
 </html>
-

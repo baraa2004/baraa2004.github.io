@@ -1,4 +1,5 @@
 /* Meme container styles */
+
 .meme-container {
     display: flex;
     flex-direction: column;

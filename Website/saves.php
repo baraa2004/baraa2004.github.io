@@ -24,6 +24,9 @@ if (!isset($_SESSION['user_id'])) {
             <img src="../Data/logo_memes_nocolor.png" alt="Logo" class="logo">
         </div>
         <nav>
+            <a href="feed.php">
+                <i class="fas fa-rss"></i> Feed
+            </a>
             <a href="explore.php">
                 <i class="fas fa-search"></i> Explore
             </a>
