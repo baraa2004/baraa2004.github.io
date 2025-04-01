@@ -22,105 +22,10 @@ $updated = isset($_GET['updated']);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Profile</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="profile_feed.css">
+    <link rel="stylesheet" href="profile.css">
     <link href="https://fonts.googleapis.com/css2?family=Lacquer&display=swap" rel="stylesheet">
     <link rel="icon" href="../Data/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        /* Profile container styles */
-        .profile-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .page-title {
-            font-size: 2em;
-            color: var(--text-color);
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .profile-content {
-            display: flex;
-            justify-content: center; /* Center both containers horizontally */
-            align-items: flex-start; /* Align containers to the top */
-            gap: 40px; /* Add spacing between the containers */
-            width: 100%;
-            max-width: 900px;
-        }
-
-        .profile-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            background-color: var(--background-color);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .profile-picture {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--button-background-color);
-        }
-
-        .profile-form input {
-            width: 100%;
-            max-width: 300px;
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid var(--button-background-color);
-            border-radius: 5px;
-            background-color: var(--input-background-color);
-            color: var(--text-color);
-        }
-
-        .profile-form button {
-            margin-top: 10px;
-            width: 100%;
-        }
-
-        /* Upload form styles */
-        .upload-form {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: var(--background-color);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .upload-form h2 {
-            margin-bottom: 15px;
-            color: var(--text-color);
-        }
-
-        .upload-form input {
-            width: 100%;
-            max-width: 300px;
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid var(--button-background-color);
-            border-radius: 5px;
-            background-color: var(--input-background-color);
-            color: var(--text-color);
-        }
-
-        .upload-form button {
-            margin-top: 10px;
-            width: 100%;
-        }
-    </style>
 </head>
 <body>
     <div class="app-bar">
