@@ -2,7 +2,7 @@
 include 'db.php';
 $error = null;
 $success = false;
-
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username']);
     $password = $_POST['password'];
@@ -11,16 +11,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($password !== $confirm) {
         $error = "Passwords do not match.";
     } else {
-        $hashed = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-        $stmt->bind_param("ss", $username, $hashed);
+        try {
+            $hashed = password_hash($password, PASSWORD_DEFAULT);
+            $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
+            $stmt->bind_param("ss", $username, $hashed);
+            $stmt->execute();
 
-        if ($stmt->execute()) {
             $success = true;
             header("Location: loginpage.php");
             exit;
-        } else {
-            $error = "Username already exists or registration failed.";
+
+        } catch (mysqli_sql_exception $e) {
+            if (strpos($e->getMessage(), 'Duplicate entry') !== false) {
+                $error = "❌ There is already an account with the same username.";
+            } else {
+                $error = "❌ Registration failed. Please try again.";
+            }
         }
     }
 }
