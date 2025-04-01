@@ -39,12 +39,13 @@ $updated = isset($_GET['updated']);
 </div>
 
 <nav id="sidebar-nav" class="sidebar">
-    <a href="explore.php"><i class="fas fa-search"></i> Explore</a>
-    <a href="feed.php"><i class="fas fa-rss"></i> Feed</a>
-    <a href="saves.php"><i class="fas fa-bookmark"></i> Saved</a>
-    <a href="profile.php"class="active"><i class="fas fa-user"></i> Profile</a>
-    <a href="logout.php" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
-</nav>
+        <a href="explore.php"><i class="fas fa-search"></i> Explore</a>
+        <a href="feed.php"><i class="fas fa-rss"></i> Feed</a>
+        <a href="saves.php"><i class="fas fa-bookmark"></i> Saved</a>
+        <a href="profile.php" class="active"><i class="fas fa-user"></i> Profile</a>
+        <a href="info.php"><i class="fas fa-info-circle"></i> About</a>
+        <a href="logout.php" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </nav>
 
 <div id="overlay" onclick="toggleSidebar()"></div>
 
