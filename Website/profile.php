@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
@@ -23,6 +24,8 @@ $updated = isset($_GET['updated']);
     <title>Your Profile</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="alert.css">
+
     <link href="https://fonts.googleapis.com/css2?family=Lacquer&display=swap" rel="stylesheet">
     <link rel="icon" href="../Data/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -66,6 +69,7 @@ $updated = isset($_GET['updated']);
                     <input type="password" name="new_password" placeholder="New Password">
                     <input type="text" name="profile_picture" placeholder="Profile Picture URL">
                     <button type="submit" class="btn">Update Profile</button>
+                    <button type="button" id="delete-account" class="btn delete-btn">Delete Account</button>
                 </form>
             </div>
 
@@ -79,5 +83,6 @@ $updated = isset($_GET['updated']);
             </div>
         </div>
     </div>
+    <script src="profile.js"></script>
 </body>
 </html>
