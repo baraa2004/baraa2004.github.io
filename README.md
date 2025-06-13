@@ -75,6 +75,6 @@ Follow these steps to run the project locally:
 
 1. Clone the repository to your local machine:
    ```bash
-   git clone https://github.com/your-username/meme-website.git
+   git clone https://github.com/bv4ts/meme-website.git
 
 
